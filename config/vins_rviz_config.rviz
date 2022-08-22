@@ -137,7 +137,7 @@ Visualization Manager:
           Marker Topic: /vins_estimator/camera_pose_visual
           Name: camera_visual
           Namespaces:
-            {}
+            { }
           Queue Size: 100
           Value: true
         - Alpha: 1
@@ -211,7 +211,7 @@ Visualization Manager:
           Show Axes: true
           Show Names: true
           Tree:
-            {}
+            { }
           Update Interval: 0
           Value: true
       Enabled: false
@@ -269,7 +269,7 @@ Visualization Manager:
           Marker Topic: /pose_graph/pose_graph
           Name: loop_visual
           Namespaces:
-            {}
+            { }
           Queue Size: 100
           Value: true
         - Class: rviz/MarkerArray
@@ -277,7 +277,7 @@ Visualization Manager:
           Marker Topic: /pose_graph/camera_pose_visual
           Name: camera_visual
           Namespaces:
-            {}
+            { }
           Queue Size: 100
           Value: true
         - Class: rviz/Image
@@ -297,7 +297,7 @@ Visualization Manager:
           Marker Topic: /pose_graph/key_odometrys
           Name: Marker
           Namespaces:
-            {}
+            { }
           Queue Size: 100
           Value: true
         - Alpha: 1
