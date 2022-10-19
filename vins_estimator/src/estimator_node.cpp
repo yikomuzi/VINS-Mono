@@ -194,11 +194,13 @@ void relocalization_callback(const sensor_msgs::PointCloudConstPtr &points_msg) 
 void process() {
     while (true) {
         std::vector<std::pair<std::vector<sensor_msgs::ImuConstPtr>, sensor_msgs::PointCloudConstPtr>> measurements;
+
         std::unique_lock<std::mutex> lk(m_buf);
         con.wait(lk, [&] {
             return (measurements = getMeasurements()).size() != 0;
         });
         lk.unlock();
+
         m_estimator.lock();
         for (auto &measurement: measurements) {
             auto img_msg = measurement.second;
@@ -326,11 +328,16 @@ int main(int argc, char **argv) {
 
     registerPub(n);
 
-    ros::Subscriber sub_imu = n.subscribe(IMU_TOPIC, 2000, imu_callback, ros::TransportHints().tcpNoDelay());
+    // 订阅图片feature数据，由feature_tracker节点发布
     ros::Subscriber sub_image = n.subscribe("/feature_tracker/feature", 2000, feature_callback);
     ros::Subscriber sub_restart = n.subscribe("/feature_tracker/restart", 2000, restart_callback);
+
+    // 订阅imu数据，由rosbag提供
+    ros::Subscriber sub_imu = n.subscribe(IMU_TOPIC, 2000, imu_callback, ros::TransportHints().tcpNoDelay());
+
     ros::Subscriber sub_relo_points = n.subscribe("/pose_graph/match_points", 2000, relocalization_callback);
 
+    //  运行VIO线程，核心内容均在此（imu预积分）
     std::thread measurement_process{process};
     ros::spin();
 
